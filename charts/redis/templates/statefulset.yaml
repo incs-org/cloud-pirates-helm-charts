@@ -92,11 +92,12 @@ spec:
               if [ "$SENTINEL_FOUND" = true ] && [ -n "$CURRENT_MASTER" ]; then
                 # Sentinel knows the master - configure accordingly
                 MY_HOSTNAME=$(hostname)
-                MY_HOSTNAME_FQDN="${MY_HOSTNAME}.{{ include "redis.fullname" . }}-headless"
+                MY_HOSTNAME_FQDN="${MY_HOSTNAME}.{{ include "redis.fullname" . }}-headless" #may not actually be the FQDN, see below
+                MY_HOSTNAME_SERVICE=$(hostname -f)
                 MY_IP=$(hostname -i)
 
                 # Check if I am the master by hostname or IP
-                if [ "$MY_IP" = "$CURRENT_MASTER" ] || [ "$MY_HOSTNAME_FQDN" = "$CURRENT_MASTER" ] || [ "$MY_HOSTNAME" = "$CURRENT_MASTER" ]; then
+                if [ "$MY_IP" = "$CURRENT_MASTER" ] || [ "$MY_HOSTNAME_FQDN" = "$CURRENT_MASTER" ] || [ "$MY_HOSTNAME_SERVICE" = "$CURRENT_MASTER" ] || [ "$MY_HOSTNAME" = "$CURRENT_MASTER" ]; then
                   echo "I am the current master according to Sentinel"
                 else
                   echo "Configuring as replica of current master: $CURRENT_MASTER"
@@ -613,8 +614,10 @@ spec:
                 path: {{ .Values.tls.certFilename }}
               - key: {{ .Values.tls.certKeyFilename }}
                 path: {{ .Values.tls.certKeyFilename }}
+                {{ - if not .Values.tls.PublicCA }}
               - key: {{ .Values.tls.certCAFilename }}
                 path: {{ .Values.tls.certCAFilename }}
+                {{- end }}
         {{- end }}
         {{- if .Values.extraVolumes }}
         {{- toYaml .Values.extraVolumes | nindent 8 }}
