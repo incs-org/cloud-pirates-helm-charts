@@ -105,6 +105,8 @@ tls:
   port: 6380
   ## @param tls.authClients Require clients to authenticate with a valid client certificate
   authClients: true
+  ## @param tls.publicCA Disable mounting the CA certificate from the tls secret, instead use public CA certificates
+  publicCA: false
 
 ## @section config Redis configuration options
 config:
