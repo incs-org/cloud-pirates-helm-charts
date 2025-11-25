@@ -614,7 +614,7 @@ spec:
                 path: {{ .Values.tls.certFilename }}
               - key: {{ .Values.tls.certKeyFilename }}
                 path: {{ .Values.tls.certKeyFilename }}
-                {{ - if not .Values.tls.PublicCA }}
+                {{ - if not .Values.tls.publicCA }}
               - key: {{ .Values.tls.certCAFilename }}
                 path: {{ .Values.tls.certCAFilename }}
                 {{- end }}
