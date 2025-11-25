@@ -614,10 +614,10 @@ spec:
                 path: {{ .Values.tls.certFilename }}
               - key: {{ .Values.tls.certKeyFilename }}
                 path: {{ .Values.tls.certKeyFilename }}
-                {{ - if not .Values.tls.publicCA }}
+              {{ - if not .Values.tls.publicCA }}
               - key: {{ .Values.tls.certCAFilename }}
                 path: {{ .Values.tls.certCAFilename }}
-                {{- end }}
+              {{- end }}
         {{- end }}
         {{- if .Values.extraVolumes }}
         {{- toYaml .Values.extraVolumes | nindent 8 }}
